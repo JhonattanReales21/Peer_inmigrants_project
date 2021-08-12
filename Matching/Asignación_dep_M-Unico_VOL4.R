@@ -2,17 +2,17 @@ library(tidyverse)
 library(lpSolve)
 library(networkD3)
 
-setwd("C:/Users/Uninorte/Dropbox/ASPECTOS MAESTRIA/ENTREGABLE 5/Acercamiento con modelo unico (Departamento)")
+#setwd("C:/Users/Uninorte/Dropbox/ASPECTOS MAESTRIA/ENTREGABLE 5/Acercamiento con modelo unico (Departamento)")
 
-mat_familias <- read.csv2("Datos_familia_asignación_DEP.csv") %>% select(-1)
+mat_familias <- read.csv2("Datos_familia_asignación_DEP.csv", fileEncoding = "Latin1") %>% select(-1)
 matrix_salud <- read.csv2("Matriz_penalizaciones_salud.csv") %>% select(-1) # PENALIZACIONES DE SALUD/DISTANCIA
 
-setwd("C:/Users/Uninorte/Dropbox/ASPECTOS MAESTRIA/ENTREGABLE 5")
+#setwd("C:/Users/Uninorte/Dropbox/ASPECTOS MAESTRIA/ENTREGABLE 5")
 
 dep_familias <- read.csv("dep_familias.csv", header = T, stringsAsFactors = T, fileEncoding = "Latin1") %>% select(-1)
-data_Dane <- read.csv("Dane_etapa_mapeo.csv", header = T, stringsAsFactors = T, fileEncoding = "Latin1") %>% select(-1)
+data_Dane <- read.csv("Dane_TOTAL_etapa_mapeo.csv", header = T, stringsAsFactors = T, fileEncoding = "Latin1") %>% select(-1)
 
-setwd("C:/Users/Uninorte/Dropbox/ASPECTOS MAESTRIA/ENTREGABLE 5/Acercamiento con modelo unico (Departamento)")
+#setwd("C:/Users/Uninorte/Dropbox/ASPECTOS MAESTRIA/ENTREGABLE 5/Acercamiento con modelo unico (Departamento)")
 
 Departamentos <- c("Antioquia", "Atlantico", "Bogota", "Bolivar", "Boyaca", "Caldas",
                    "Caqueta", "Cauca", "Cesar",  "Choco", "Cordoba", "Cundinamarca",
@@ -186,7 +186,6 @@ for (var in cluster_cada_dep){
 # Calculo de Rj definitivo
 Aprox_num_CASOS_por_dep=round(Aprox_num_venezolanos_por_dep/Promedio_miembros_por_caso,0)
 
-
 rest.filas <- rep(1, nrow(objetivos))
 rest.columnas <- Aprox_num_CASOS_por_dep
 signos.fila <- rep("=", nrow(objetivos))
@@ -203,6 +202,7 @@ apply(modelo$solution, 2, sum)
 matriz_flujo <- matrix(0,24,24) %>% as.data.frame()
 colnames(matriz_flujo) <- names(as.data.frame(objetivos))
 rownames(matriz_flujo) <- names(as.data.frame(objetivos))
+apply(matriz_flujo, 2, sum)
 
 asignacion <- as.data.frame(modelo$solution)
 asignacion$Departamento <- dep_familias$Departamento
@@ -215,7 +215,10 @@ for (i in 1:ncol(matriz_flujo)){
       matriz_flujo[i, ] <- suma
 }
 
-setwd("C:/Users/Uninorte/Dropbox/ASPECTOS MAESTRIA/ENTREGABLE 6")
+#setwd("C:/Users/Uninorte/Dropbox/ASPECTOS MAESTRIA/ENTREGABLE 6")
+colnames(asignacion) <- c("Familia", "Departamento", Departamentos)
+
+write.csv(asignacion, "Matriz_asignación_V4_VF.csv")
 
 write.csv(matriz_flujo, "Matriz_flujo_departamentos_vol4.csv")
 
@@ -243,34 +246,36 @@ for (i in 1:dim(mat_familias)[1]){
 matriz_mejora$Diferencia_absoluta <-matriz_mejora$Prob_nueva- matriz_mejora$Prob_actual
 matriz_mejora$diferencia_porcentual <-100*((matriz_mejora$Prob_nueva-matriz_mejora$Prob_actual)/matriz_mejora$Prob_actual)
 
+
 # Prob Actual
 mean(matriz_mejora$Prob_actual)
-quantile(matriz_mejora$Prob_actual)
-
+quantile(matriz_mejora$Prob_actual, 0.25)
+quantile(matriz_mejora$Prob_actual, 0.5)
 quantile(matriz_mejora$Prob_actual,0.7)
 quantile(matriz_mejora$Prob_actual,0.8)
 quantile(matriz_mejora$Prob_actual,0.9)
 
 # Prob Destino
 mean(matriz_mejora$Prob_nueva)
-quantile(matriz_mejora$Prob_nueva)
-
+quantile(matriz_mejora$Prob_nueva, 0.25)
+quantile(matriz_mejora$Prob_nueva, 0.5)
 quantile(matriz_mejora$Prob_nueva,0.7)
 quantile(matriz_mejora$Prob_nueva,0.8)
 quantile(matriz_mejora$Prob_nueva,0.9)
 
+
 #Mejora Absoluta
 mean(matriz_mejora$Diferencia_absoluta)
-quantile(matriz_mejora$Diferencia_absoluta)
-
+quantile(matriz_mejora$Diferencia_absoluta, 0.25)
+quantile(matriz_mejora$Diferencia_absoluta, 0.5)
 quantile(matriz_mejora$Diferencia_absoluta,0.7)
 quantile(matriz_mejora$Diferencia_absoluta,0.8)
 quantile(matriz_mejora$Diferencia_absoluta,0.9)
 
 #Mejora Porcentual
 mean(matriz_mejora$diferencia_porcentual)
-quantile(matriz_mejora$diferencia_porcentual)
-
+quantile(matriz_mejora$diferencia_porcentual, 0.25)
+quantile(matriz_mejora$diferencia_porcentual, 0.5)
 quantile(matriz_mejora$diferencia_porcentual,0.7)
 quantile(matriz_mejora$diferencia_porcentual,0.8)
 quantile(matriz_mejora$diferencia_porcentual,0.9)
@@ -278,38 +283,135 @@ quantile(matriz_mejora$diferencia_porcentual,0.9)
 
 #write.csv2(matriz_mejora, "Matriz_p9.csv")
 
+pdf("histogramas_probabilidades.pdf")
 # Histograma prob actual
-histograma <- matriz_mejora %>% ggplot(aes(x= Prob_actual )) + geom_histogram(bins = 20, fill="deepskyblue1", color="black" )+
-      ggplot2::theme_bw()+xlab("Probabilidad actual") + ylab("Frecuencia") %>% 
-      geom_vline(xintercept=mean(matriz_mejora$Prob_actual), color="red", lwd=1.3) 
-histograma <- histograma+geom_vline(xintercept=quantile(matriz_mejora$Prob_actual, 0.5), color="green", lwd=1.3) 
-histograma <- histograma+geom_vline(xintercept=quantile(matriz_mejora$Prob_actual, 0.8), color="gray", lwd=1.3)
-histograma+geom_vline(xintercept=quantile(matriz_mejora$Prob_actual, 0.25), color="gray", lwd=1.3)
+ggplot(matriz_mejora, aes(x=Prob_actual)) + geom_histogram(color="dodgerblue3", fill="dodgerblue", alpha=0.7) +
+   geom_vline(aes(xintercept = mean(Prob_actual)),col='red', size=2) + 
+   geom_vline(aes(xintercept =quantile(Prob_actual, 0.25)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(Prob_actual, 0.5)),col='limegreen', size=2) + 
+   geom_vline(aes(xintercept =quantile(Prob_actual, 0.70)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(Prob_actual, 0.80)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(Prob_actual, 0.90)),col='slategray', size=1.5) + 
+   theme_bw() + 
+   labs(x="Current probability", y="Frequency") + 
+   ylim(0,4000) + 
+   xlim(-0.05,1.05)
 
 # Histograma prob destino
-histograma <- matriz_mejora %>% ggplot(aes(x= Prob_nueva )) + geom_histogram(bins = 20, fill="deepskyblue1", color="black" )+
-      ggplot2::theme_bw()+xlab("Probabilidad en ubicación de destino") + ylab("Frecuencia") %>% 
-      geom_vline(xintercept=mean(matriz_mejora$Prob_nueva), color="red", lwd=1.3) 
-histograma <- histograma+geom_vline(xintercept=quantile(matriz_mejora$Prob_nueva, 0.5), color="green", lwd=1.3) 
-histograma <- histograma+geom_vline(xintercept=quantile(matriz_mejora$Prob_nueva, 0.8), color="gray", lwd=1.3)
-histograma+geom_vline(xintercept=quantile(matriz_mejora$Prob_nueva, 0.25), color="gray", lwd=1.3)
+ggplot(matriz_mejora, aes(x=Prob_nueva)) + geom_histogram(color="dodgerblue3", fill="dodgerblue", alpha=0.7) +
+   geom_vline(aes(xintercept = mean(Prob_nueva)),col='red', size=2) + 
+   geom_vline(aes(xintercept =quantile(Prob_nueva, 0.25)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(Prob_nueva, 0.5)),col='limegreen', size=2) + 
+   geom_vline(aes(xintercept =quantile(Prob_nueva, 0.70)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(Prob_nueva, 0.80)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(Prob_nueva, 0.90)),col='slategray', size=1.5) + 
+   theme_bw() + 
+   labs(x="Probability in assigned location", y="Frequency") + 
+   ylim(0,4000)+ 
+   xlim(-0.05,1.05)
 
 # Histograma Mejora prob absoluta
-histograma <- matriz_mejora %>% ggplot(aes(x= Diferencia_absoluta )) + geom_histogram(bins = 25, fill="deepskyblue1", color="black" )+
-      ggplot2::theme_bw()+xlab("Mejora en probabilidad absoluta") + ylab("Frecuencia") %>% 
-      geom_vline(xintercept=mean(matriz_mejora$Diferencia_absoluta), color="red", lwd=1.3) 
-histograma <- histograma+geom_vline(xintercept=quantile(matriz_mejora$Diferencia_absoluta, 0.5), color="green", lwd=1.3) 
-histograma <- histograma+geom_vline(xintercept=quantile(matriz_mejora$Diferencia_absoluta, 0.8), color="gray", lwd=1.3)
-histograma+geom_vline(xintercept=quantile(matriz_mejora$Diferencia_absoluta, 0.25), color="gray", lwd=1.3)
+ggplot(matriz_mejora, aes(x=Diferencia_absoluta)) + geom_histogram(color="dodgerblue3", fill="dodgerblue", alpha=0.7) +
+   geom_vline(aes(xintercept = mean(Diferencia_absoluta)),col='red', size=2) + 
+   geom_vline(aes(xintercept =quantile(Diferencia_absoluta, 0.25)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(Diferencia_absoluta, 0.5)),col='limegreen', size=2) + 
+   geom_vline(aes(xintercept =quantile(Diferencia_absoluta, 0.70)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(Diferencia_absoluta, 0.80)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(Diferencia_absoluta, 0.90)),col='slategray', size=1.5) + 
+   theme_bw() + 
+   labs(x="Absolute difference probability", y="Frequency") + 
+   ylim(0,4000)+ 
+   xlim(-0.05,1.05)
 
 # Histograma Mejora prob porcentual
-histograma <- matriz_mejora %>% ggplot(aes(x= diferencia_porcentual )) + geom_histogram(bins = 25, fill="coral3", color="black" )+
-      ggplot2::theme_bw()+xlab("Mejora en probabilidad porcentual") + ylab("Frecuencia") %>% 
-      geom_vline(xintercept=mean(matriz_mejora$diferencia_porcentual), color="red", lwd=1.3) 
-histograma <- histograma+geom_vline(xintercept=quantile(matriz_mejora$diferencia_porcentual, 0.5), color="green", lwd=1.3) 
-histograma <- histograma+geom_vline(xintercept=quantile(matriz_mejora$diferencia_porcentual, 0.8), color="gray", lwd=1.3)
-histograma+geom_vline(xintercept=quantile(matriz_mejora$diferencia_porcentual, 0.25), color="gray", lwd=1.3)
+ggplot(matriz_mejora, aes(x=diferencia_porcentual)) + geom_histogram(color="dodgerblue3", fill="dodgerblue", alpha=0.7) +
+   geom_vline(aes(xintercept = mean(diferencia_porcentual)),col='red', size=2) + 
+   geom_vline(aes(xintercept =quantile(diferencia_porcentual, 0.25)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(diferencia_porcentual, 0.5)),col='limegreen', size=2) + 
+   geom_vline(aes(xintercept =quantile(diferencia_porcentual, 0.70)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(diferencia_porcentual, 0.80)),col='slategray', size=1.5) + 
+   geom_vline(aes(xintercept =quantile(diferencia_porcentual, 0.90)),col='slategray', size=1.5) + 
+   theme_bw() + 
+   labs(x="Porcentual difference probability", y="Frequency") + 
+   ylim(0,4000)
+
+
+estaticos <- filter(matriz_mejora, Diferencia_absoluta == 0) # 3705 familias
+
+
+dev.off()
+#### ANÁLISIS VULNERABLES
+
+vulnerables <- filter(matriz_mejora, Prob_nueva <= 0.15) # 970 hogares vulnerables
+vulnerables_estaticos <- filter(vulnerables, diferencia_porcentual == 0) # 645 hogares se quedan
+vulnerables_dinamicos <- filter(vulnerables, diferencia_porcentual > 0) # 467 hogares se mueven
+table(vulnerables_dinamicos$Dep_asignado)
+table(vulnerables$Dep_actual)
+mean(vulnerables_dinamicos$diferencia_porcentual)
+mean(vulnerables_dinamicos$Diferencia_absoluta)
+
+ss <- vulnerables_dinamicos %>% group_by(Dep_asignado) %>% summarise("freq"=n()) %>% arrange(desc(freq))
+
+
+### ANÁLISIS DE MEJORA POR INDIVIDUOS
+library(stringr)
+
+Dane_paramodelos <- read.csv("Dane_paramodelos.csv") %>% select(-c(1, 13,14,16:18))
+Dane_paramodelos <- rename(Dane_paramodelos, "Familia" = "Identificacion")
+Dane_paramodelos$Familia <- str_sub(Dane_paramodelos$Familia,1,9)
+Dane_paramodelos$Familia <- gsub(" ", "", Dane_paramodelos$Familia, fixed = TRUE)
+
+modelado_ranger <- read.csv("OneModel_RANGER.Y2_Modeling.csv", sep=";")
+modelado_ranger <- rename(modelado_ranger, "Familia" = "Families")
+modelado_ranger$Familia <- gsub(" ", "", modelado_ranger$Familia, fixed = TRUE)
+
+modelado_por_individuos <- left_join(Dane_paramodelos, modelado_ranger, by = "Familia")
+
+
+vector_bool <- c()
+for (i in 1:nrow(Dane_paramodelos)){
+   if(Dane_paramodelos[i, "Familia"] == modelado_ranger[i, "Familia"]){
+      vector_bool <- c(vector_bool, TRUE)
+   }else{
+      vector_bool <- c(vector_bool, FALSE)
+   }
+}
+
+matriz_mejora$Familia <- gsub(" ", "", matriz_mejora$Familia)
+matriz_union <- read.csv("union_Daneparamodelos_modelado.csv", sep=";") %>% select(-c(1, 3, 14,15, 17,18,19))
+matriz_union <- rename(matriz_union, "Familia" = "Families")
+modelado_por_individuos <- left_join(matriz_union, matriz_mejora, by="Familia")
+write.csv2(modelado_por_individuos, "probabilidades_modelado_por_individuos.csv")
+
+data_Dane$Familia <- gsub(" ", "", data_Dane$Familia)
+mejora_por_individuos <- left_join(data_Dane, matriz_mejora, by = "Familia")
+write.csv2(mejora_por_individuos, "matriz_mejora_probabilidades_matching_individuos.csv")
+
+
+### ANÁLISIS ADULTOS MAYORES
+
+adultos_mayores <-  filter(mejora_por_individuos, Edad == "(59,100]")
+sum(adultos_mayores$Diferencia_absoluta >0)/nrow(adultos_mayores) # numero de adultos mayores reubicados
+adultos_mayores %>% filter(Diferencia_absoluta>0) %>% summarise("mean_prob"=mean(Diferencia_absoluta))
+adultos_mayores %>% filter(Diferencia_absoluta>0) %>% summarise("mean_prob"=mean(diferencia_porcentual))
+deptos_adultos_mayores <- as.data.frame(table(adultos_mayores$Dep_asignado))
+
+### ANÁLISIS MUJERES
+mujeres <-  filter(mejora_por_individuos, Genero == "Femenino")
+mean(mujeres$Prob_nueva)
+sum(mujeres$Diferencia_absoluta >0)/nrow(mujeres)
+mujeres %>% filter(Diferencia_absoluta>0) %>% summarise("mean_prob"=mean(Diferencia_absoluta))
+mujeres %>% filter(Diferencia_absoluta>0) %>% summarise("mean_prob"=mean(diferencia_porcentual))
+deptos_mujeres <- mujeres %>% group_by(Departamento) %>% summarise("freq"=n(), "mean_probs"=mean(Prob_nueva))
+deptos_mujeres <- as.data.frame(table(mujeres$Dep_asignado))
+deptos_actuales_mujeres <- as.data.frame(table(mujeres$Dep_actual))
 
 
 
-#
+
+
+mat_familias_pequeña <- select(mat_familias, Familia, n_vulnerables, n_niños, Num_miembros)
+mat_familias_pequeña$Familia <- gsub(" ", "", mat_familias_pequeña$Familia)
+matriz_mejora$Familia <- gsub(" ", "", matriz_mejora$Familia)
+mat_mejora_familias_vulnerables <- left_join(matriz_mejora, mat_familias_pequeña, by="Familia")
+write.csv2(mat_mejora_familias_vulnerables, "mejora_asignacion_familias.csv")
