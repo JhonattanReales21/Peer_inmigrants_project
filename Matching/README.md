@@ -1,0 +1,10 @@
+# Matching Explanation
+
+La etapa de Matching en el algoritmo es la encargada de sugerir la redistribución de inmigrantes a las diferentes locaciones consideradas en el país basada en un modelo de optimización que optimiza un criterio dado con respecto a la métrica a nivel de caso (familia).
+
+El modelo busca minimizar la probabilidad de que ningún miembro obtenga un empleo en alguna de las locaciones consideradas. Asimismo, se consideran restricciones para los hogares con necesidades especiales en términos de educación y salud.
+
+Para el presente modelo, la capacidad de cada locación para recibir inmigrantes fue estimada a partir del análisis de absorción en el que se propuso una agrupación de clusters para los departamentos. En este sentido, para los departamentos del Cluster 1 se sugiere que reciban inmigrantes de tal manera que un 6% de su población esté compuesta por inmigrantes. Para las locaciones del Cluster 2 este porcentaje es del 4%, para el Cluster 3 será de 2.5% y para los del Cluster 4 será de 1%.
+
+Para ejecutar el algoritmo de asignación, se necesita como datos de entrada las probabilidades agrupadas a nivel de hogar que se generaron en la etapa de mapeo. Adicionalmente, se hace necesario la matriz de restricciones de salud y educación para los departamentos con condiciones deficientes en estos ámbitos. Finalmente, se consideran entre los datos de entrada, la información demográfica de cada uno de los inmigrantes.
+Como datos de salida, el modelo genera en primer lugar, la redistribución sugerida para los hogares de inmigrantes. En este sentido, se obtiene una matriz donde se tiene para cada una de los hogares analizadas la locacion hacia donde se sugiere su redistribución. Asimismo, se genera una tabla con el análisis de probabilidades para cada familia, en esta tabla se muestra la mejora de probabilidad para cada una de los hogares.
