@@ -4,33 +4,31 @@ library(readxl)
 library(readr)
 
 
-setwd("~/ASPECTOS MAESTRIA")
+setwd("~/path/where/you/have/your/inmigrants/data")
 
-#Leemos los datos
-Dane_2019 <- read.csv("Dane2019-migrantes.csv", header = T, sep = ",", dec = ".")
-#View(df_status(Dane_2019))
-# 32,815 individuos
+# Read the data
+Dane_2019 <- read.csv("<Name of your INMIGRANTS DataBase complete>", header = T, sep = ",", dec = ".")
+   
+# Variable occupation ( 5 levels)
 
-# Variable ocupacion ( 5 niveles)
+      #P6870 -> number of persons in the company
 
-      #P6870 -> Numero de personas en la empresa
+Dane_2019$occupation[(!(is.na(Dane_2019$P6765))) & (Dane_2019$P6870 >=4)] = "Independiente formal"
 
-Dane_2019$ocupacion[(!(is.na(Dane_2019$P6765))) & (Dane_2019$P6870 >=4)] = "Independiente formal"
-
-Dane_2019$ocupacion[ (!(is.na(Dane_2019$P6765))) & (Dane_2019$P6870 <4) |
+Dane_2019$occupation[ (!(is.na(Dane_2019$P6765))) & (Dane_2019$P6870 <4) |
                            (is.na(Dane_2019$P6765) & (Dane_2019$P6870 <4)) |
                            Dane_2019$P6430==7] = "Empleo informal"
 
-Dane_2019$ocupacion[ Dane_2019$P6440 %in% (1:2) & (is.na(Dane_2019$P6765)) & (Dane_2019$P6870 >=4)] = "Empleo formal"
+Dane_2019$occupation[ Dane_2019$P6440 %in% (1:2) & (is.na(Dane_2019$P6765)) & (Dane_2019$P6870 >=4)] = "Empleo formal"
 
-# Niños e inactivos no aplican
-Dane_2019$ocupacion[Dane_2019$P6040 <= 10 | !(is.na(Dane_2019$P7430))]="No aplica"
+# Kids and inactive are not consider for the analysis
+Dane_2019$occupation[Dane_2019$P6040 <= 10 | !(is.na(Dane_2019$P7430))]="No aplica"
 
  #
-Dane_2019$ocupacion[is.na(Dane_2019$ocupacion)] = "Desempleado"
+Dane_2019$occupation[is.na(Dane_2019$occupation)] = "Desempleado"
 
 #
-frec_ocupaciones <- Dane_2019%>%group_by(ocupacion)%>%tally() 
+frec_occupationes <- Dane_2019%>%group_by(occupation)%>%tally() 
 
 ###
 #Variable Grupo.de.poblacion ( 4 niveles )
@@ -45,16 +43,16 @@ Dane_2019$Grupo.de.poblacion[Dane_2019$P6040 <= 10 | !(is.na(Dane_2019$P7430))]=
 
 ##
 #Modelo Binario Ocupado & Desocupado
-Dane_2019$Y_modelo1[Dane_2019$ocupacion %in% c("Empleo formal", "Empleo informal","Independiente formal")] = "Ocupado"
-Dane_2019$Y_modelo1[Dane_2019$ocupacion=="Desempleado"] = "Desocupado"
-Dane_2019$Y_modelo1[Dane_2019$ocupacion=="No aplica"] = "No aplica"
+Dane_2019$Y_modelo1[Dane_2019$occupation %in% c("Empleo formal", "Empleo informal","Independiente formal")] = "Ocupado"
+Dane_2019$Y_modelo1[Dane_2019$occupation=="Desempleado"] = "Desocupado"
+Dane_2019$Y_modelo1[Dane_2019$occupation=="No aplica"] = "No aplica"
 
 sum(is.na(Dane_2019$Y_modelo1))
 
 #Modelo Binario Empleo & Desocupado-informal
-Dane_2019$Y_modelo2[Dane_2019$ocupacion %in% c("Empleo formal","Independiente formal")] = "Ocupado"
-Dane_2019$Y_modelo2[Dane_2019$ocupacion %in% c("Desempleado", "Empleo informal")] = "Desocupado/Informal"
-Dane_2019$Y_modelo2[Dane_2019$ocupacion=="No aplica"] = "No aplica"
+Dane_2019$Y_modelo2[Dane_2019$occupation %in% c("Empleo formal","Independiente formal")] = "Ocupado"
+Dane_2019$Y_modelo2[Dane_2019$occupation %in% c("Desempleado", "Empleo informal")] = "Desocupado/Informal"
+Dane_2019$Y_modelo2[Dane_2019$occupation=="No aplica"] = "No aplica"
 ##
 
 
@@ -68,7 +66,7 @@ Dane_2019 <- dplyr::select(Dane_2019, id_personal, Familia, DPTO.x, AREA.x, MES.
                            P6510, P6510S2, P6630S1, P6630S1A1, P6765, P6772, P6775, P6750, P6780, P1800, P1800S1, P1802, P1879, P6800, P6870,
                            P6880, P6915, P6920, P6940, P6990, P9450, P7020, P760, P7026, P7028, P1880, P7130, P7100,P7120, P514, P515, P7240, 
                            OFICIO, RAMA2D, RAMA4D, INGLABO, P7250, P7280, P7310, P7360 ,P7260, OFICIO2, RAMA2D_D, RAMA4D_D, P7430, P7450, P7458,P1884, P1807, P7495, P7505,
-                           P1661S4, P1661S4A1, P1661S4A2,P753S3, P753, P756S3,P755, ocupacion,Grupo.de.poblacion, fex_c_2011.x, Y_modelo1, Y_modelo2,
+                           P1661S4, P1661S4A1, P1661S4A2,P753S3, P753, P756S3,P755, occupation,Grupo.de.poblacion, fex_c_2011.x, Y_modelo1, Y_modelo2,
                            P7454,P6125,P6140,P6300,P7090,P7170S1,P1881,P1806,P7390,
                            P6585S1A1, P6585S1A2, P6585S2A1, P6585S2A2,
                            P6585S3A1, P6585S3A2, P6585S4A1, P6585S4A2, P6545S1, P6545S2, P6580S1, P6580S2, P7070, P7422S1, P7510S3A1,P750S3A1)
@@ -536,13 +534,13 @@ Dane_2019$Ingresos_total <- Dane_2019$Ingresos_total + Dane_2019$`P7070 Cuanto f
 Dane_2019$Ingresos_total <- Dane_2019$Ingresos_total + Dane_2019$`P7510S3A1 Cuanto recibio por ayudas en dinero de instituciones en el pais?`
 Dane_2019$Ingresos_total <- Dane_2019$Ingresos_total + Dane_2019$`P750S3A1 Cuanto recibio por ayudas en dinero de instituciones fuera del pais?`
 
-#Dane_2019_2 <- filter(Dane_2019, !(ocupacion%in%c("Empleo informal", "Empleo formal", "Desempleado") & Ingresos_total %in% 1:200 |
+#Dane_2019_2 <- filter(Dane_2019, !(occupation%in%c("Empleo informal", "Empleo formal", "Desempleado") & Ingresos_total %in% 1:200 |
  #                                   Edad > 60 & Ingresos_total %in% 1:200)) #Eliminamos personas que no saben sus ingresos
 
 write.csv2(Dane_2019, "Dane_2019_reducida.csv")
 
 #describe(Dane_2019$Ingresos_total)
-#ggplot(Dane_2019, aes(x=ocupacion, y=Ingresos_total, fill=ocupacion)) + geom_boxplot() + 
+#ggplot(Dane_2019, aes(x=occupation, y=Ingresos_total, fill=occupation)) + geom_boxplot() + 
 #   ggtitle("Ingresos totales por sector de población")+
 #   xlab("")+ ylab("Monto $") + theme_bw()
 
@@ -558,7 +556,7 @@ Dane_2019_final <-  Dane_2019
 
 # Seleccionamos las variables de interes
 Dane_2019_final  <- Dane_2019_final %>% select(Identificacion,Departamento,Grupo.de.poblacion, Genero, Edad, Parentesco, Estado.civil, Nivel.educativo.alcanzado, 
-                                                Rama.actividad,tiempo.en.colombia,Horas.disponibles, ocupacion, Y_modelo1, Y_modelo2,Mes, anio,
+                                                Rama.actividad,tiempo.en.colombia,Horas.disponibles, occupation, Y_modelo1, Y_modelo2,Mes, anio,
                                                `Siendo inactivo, por que dejo de buscar trabajo?`,
                                                `En el ultimo mes ha buscado trabajo? por que no?`, `P1807 -inactivo-, Salario minimo que aceptaria`,
                                                `Cuales fueron sus ingresos como empleado en el ultimo mes?`, `P6750 Ganancia neta por honorarios o negocio`,

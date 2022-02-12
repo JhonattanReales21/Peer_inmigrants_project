@@ -4,279 +4,274 @@ library(readr)
 library(dplyr)
 library(funModeling)
 
+## This Database construction template works for data from the DANE's GEIH survey.
+## Take in consideration that for each year the name and code of some variables could change
+
+##### Union csv - January ######
+
+setwd("~/path/to/your/january/data")
+
+Carac.january <- read.csv("Cabecera - Caracteristicas generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.january <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.january <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.january <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.january <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.january <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.january <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.january <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
 
-#### PARA EFECTUAR LA LECTURA DE LOS DATOS DE CADA MES, SE HACE NECESARIO CAMBIAR LA 
-#### CARPETA DE CADA MES (DIRECTORIO) DADO QUE TIENEN LOS MISMOS NOMBRES SOLO QUE EN
-#### CARPETAS DIFERENTES.
+January <- Carac.january %>% left_join(Work_force.january, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.january, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.january, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.january, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.january, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.january, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+
+
+##### Union csv - February ######
+
+setwd("~/path/to/your/February/data")
+
+
+Carac.february <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.february <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.february  <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.february  <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.february  <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.february  <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.february  <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.february  <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
 
+February <- Carac.february %>% left_join(Work_force.february, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.february, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.february, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.february, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.february, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.february, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
 
+##### Union csv - March ######
+
+setwd("~/path/to/your/March/data")
+
+Carac.March <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.March <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.March <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.March <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.March <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.March <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.March <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.March <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
 
+March <- Carac.March %>% left_join(Work_force.March, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.March, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.March, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.March, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.March, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.March, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+
+
+##### Union csv - April ######
+
+setwd("~/path/to/your/April/data")
+
+Carac.April <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.April <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.April <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.April<- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.April<- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.April<- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.April<- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.April<- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
+
+April <- Carac.April %>% left_join(Work_force.April, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.April, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.April, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.April, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.April, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.April, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+
+
+##### Union csv - May ######
+
+setwd("~/path/to/your/May/data")
+
+Carac.May <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.May <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.May <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.May <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.May <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.May <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.May <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.May <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
 
-##### Unión csv - Enero ######
+May <- Carac.May %>% left_join(Work_force.May, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.May, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.May, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.May, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.May, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.May, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+
 
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Enero.csv")
+##### Union csv - June ######
+
+setwd("~/path/to/your/June/data")
+
+
+Carac.June <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.June<- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.June <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.June <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.June <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.June<- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.June <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.June <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
 
-Carac.enero <- read.csv("Cabecera - Caracteristicas generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.enero <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.enero <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.enero <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.enero <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.enero <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.enero <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.enero <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
+June <- Carac.June %>% left_join(Work_force.June, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.June, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.June, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.June, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.June, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.June, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
 
-Enero <- Carac.enero %>% left_join(F_trabajo.enero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.enero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.enero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.enero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.enero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.enero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
 
+##### Union csv - July ######
 
-##### Unión csv - Febrero ######
+setwd("~/path/to/your/July/data")
+
+
+Carac.July <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.July <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.July <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.July <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.July <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.July <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.July <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.July <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
 
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Febrero.csv")
+July <- Carac.July %>% left_join(Work_force.July, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.July, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.July, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.July, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.July, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.July, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
 
 
-Carac.febrero <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.febrero <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.febrero  <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.febrero  <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.febrero  <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.febrero  <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.febrero  <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.febrero  <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
+##### Union csv - August ######
 
-Febrero <- Carac.febrero %>% left_join(F_trabajo.febrero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.febrero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.febrero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.febrero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.febrero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.febrero, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+setwd("~/path/to/your/August/data")
 
-##### Unión csv - Marzo ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Marzo.csv")
-
-Carac.Marzo <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Marzo <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Marzo <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Marzo <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Marzo <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Marzo <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Marzo <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.Marzo <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Marzo <- Carac.Marzo %>% left_join(F_trabajo.Marzo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Marzo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Marzo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Marzo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Marzo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Marzo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
-
-
-##### Unión csv - Abril ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Abril.csv")
-
-Carac.Abril <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Abril <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Abril <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Abril<- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Abril<- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Abril<- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Abril<- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.Abril<- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Abril <- Carac.Abril %>% left_join(F_trabajo.Abril, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Abril, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Abril, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Abril, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Abril, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Abril, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
-
-
-##### Unión csv - Mayo ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Mayo.csv")
-
-Carac.Mayo <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Mayo <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Mayo <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Mayo <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Mayo <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Mayo <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Mayo <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.Mayo <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Mayo <- Carac.Mayo %>% left_join(F_trabajo.Mayo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Mayo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Mayo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Mayo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Mayo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Mayo, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
-
-
-##### Unión csv - Junio ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Junio.csv")
-
-
-Carac.Junio <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Junio<- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Junio <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Junio <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Junio <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Junio<- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Junio <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.Junio <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Junio <- Carac.Junio %>% left_join(F_trabajo.Junio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Junio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Junio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Junio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Junio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Junio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
-
-
-##### Unión csv - Julio ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Julio.csv")
-
-
-Carac.Julio <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Julio <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Julio <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Julio <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Julio <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Julio <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Julio <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.Julio <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Julio <- Carac.Julio %>% left_join(F_trabajo.Julio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Julio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Julio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Julio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Julio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Julio, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
-
-
-##### Unión csv - Agosto ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Agosto.csv")
-
-Carac.Agosto <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Agosto <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Agosto <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Agosto <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Agosto <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Agosto <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Agosto <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.Agosto<- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Agosto <- Carac.Agosto %>% left_join(F_trabajo.Agosto, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Agosto, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Agosto, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Agosto, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Agosto, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Agosto, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
-
-##### Unión csv - Septiembre ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Septiembre.csv")
-
-Carac.Septiembre <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Septiembre <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Septiembre <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Septiembre <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Septiembre <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Septiembre <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Septiembre <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.Septiembre<- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Septiembre <-Carac.Septiembre %>% left_join(F_trabajo.Septiembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Septiembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Septiembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Septiembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Septiembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Septiembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
-
-
-
-##### Unión csv - Octubre ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Octubre.csv")
-
-Carac.Octubre <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Octubre <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Octubre <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Octubre <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Octubre <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Octubre <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Octubre <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-ViviendaOctubre <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Octubre<- Carac.Octubre %>% left_join(F_trabajo.Octubre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Octubre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Octubre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Octubre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Octubre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Octubre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
-
-
-
-##### Unión csv - Noviembre ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Noviembre.csv")
-
-Carac.Noviembre <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Noviembre <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Noviembre<- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Noviembre <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Noviembre <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Noviembre <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Noviembre <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.Noviembre <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Noviembre <- Carac.Noviembre %>% left_join(F_trabajo.Noviembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Noviembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Noviembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Noviembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Noviembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Noviembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
-
-
-
-##### Unión csv - Diciembre ######
-
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 -- Enero - diciembre/Diciembre.csv")
-
-Carac.Diciembre <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
-desoc.Diciembre <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
-F_trabajo.Diciembre <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
-Inac.Diciembre <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
-Ocupa.Diciembre <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
-Otros_ing.Diciembre <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
-Otras_act.Diciembre <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
-Vivienda.Diciembre <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
-
-Diciembre <- Carac.Diciembre %>% left_join(F_trabajo.Diciembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Ocupa.Diciembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(desoc.Diciembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Inac.Diciembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otras_act.Diciembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
-      left_join(Otros_ing.Diciembre, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+Carac.August <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.August <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.August <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.August <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.August <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.August <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.August <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.August<- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
+
+August <- Carac.August %>% left_join(Work_force.August, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.August, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.August, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.August, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.August, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.August, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+
+##### Union csv - September ######
+
+setwd("~/path/to/your/September/data")
+
+Carac.September <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.September <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.September <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.September <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.September <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.September <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.September <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.September<- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
+
+September <-Carac.September %>% left_join(Work_force.September, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.September, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.September, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.September, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.September, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.September, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+
+
+
+##### Union csv - October ######
+
+setwd("~/path/to/your/October/data")
+
+Carac.October <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.October <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.October <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.October <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.October <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.October <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.October <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.October <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
+
+October<- Carac.October %>% left_join(Work_force.October, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.October, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.October, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.October, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.October, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.October, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+
+
+
+##### Union csv - November ######
+
+setwd("~/path/to/your/November/data")
+
+Carac.November <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.November <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.November<- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.November <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.November <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.November <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.November <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.November <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
+
+November <- Carac.November %>% left_join(Work_force.November, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.November, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.November, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.November, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.November, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.November, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+
+
+
+##### Union csv - December ######
+
+setwd("~/path/to/your/December/data")
+
+Carac.December <- read.csv("Cabecera - Características generales (Personas).csv", header = T, sep = ";", dec = ",")
+Unemployed.December <- read.csv("Cabecera - Desocupados.csv", header = T, sep = ";", dec = ",")
+Work_force.December <- read.csv("Cabecera - Fuerza de trabajo.csv", header = T, sep = ";", dec = ",")
+Inac.December <- read.csv("Cabecera - Inactivos.csv", header = T, sep = ";", dec = ",")
+Employed.December <- read.csv("Cabecera - Ocupados.csv", header = T, sep = ";", dec = ",")
+Other_incomes.December <- read.csv("Cabecera - Otros ingresos.csv", header = T, sep = ";", dec = ",")
+Other_activities.December <- read.csv("Cabecera - Otras actividades y ayudas en la semana.csv", header = T, sep = ";", dec = ",")
+Living_place.December <- read.csv("Cabecera - Vivienda y Hogares.csv", header = T, sep = ";", dec = ",")
+
+December <- Carac.December %>% left_join(Work_force.December, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Employed.December, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Unemployed.December, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Inac.December, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_activities.December, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN")) %>% 
+      left_join(Other_incomes.December, by = c("ï..DIRECTORIO", "SECUENCIA_P", "ORDEN"))
 
 
 
 
 ###############-I-##############
-##### UNION DE MESES 2019 #######
+##### UNION OF MONTHS #######
 
 
 
-Dane_2019 <- rbind(Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto,
-                   Septiembre, Octubre, Noviembre, Diciembre)
+Dane_2019 <- rbind(January, February, March, April, May, June, July, August,
+                   September, October, November, December)
 
 
 Dane_2019 <- Dane_2019 %>% mutate("id_personal"= paste0(Dane_2019$ï..DIRECTORIO, "-", Dane_2019$SECUENCIA_P, "-", Dane_2019$ORDEN)) %>% 
@@ -286,10 +281,9 @@ Dane_2019$id_personal <- as.factor(Dane_2019$id_personal)
 
 
 ###############-I-##############
-##### UNION DE MESES DE MIGRACIÓN ##########
+##### UNION OF MIGRATION DATA ##########
 
-#   !!! CAMBIAR DIRECTORIO !!!!   #
-setwd("~/ASPECTOS MAESTRIA/DATOS GEIH 2019 (migración) -- Enero - diciembre")
+setwd("~/path/to/your/migration/data/folder")
 
 Migra1 <- read.csv("Enero.csv", header = T, sep = ";", dec = ",")
 Migra2 <- read.csv("Febrero.csv", header = T, sep = ";", dec = ",")
@@ -306,33 +300,35 @@ Migra12 <- read.csv("Diciembre.csv", header = T, sep = ";", dec = ",")
 
 
 
-Migracion_2019 <- rbind(Migra1, Migra2, Migra3, Migra4, Migra5, Migra6, Migra7, Migra8,
+Migration_2019 <- rbind(Migra1, Migra2, Migra3, Migra4, Migra5, Migra6, Migra7, Migra8,
                         Migra9, Migra10, Migra11, Migra12)
 
-Migracion_2019 <- Migracion_2019 %>% mutate("id_personal"= paste0(Migracion_2019$ï..Directorio, "-", Migracion_2019$Secuencia_p, "-", Migracion_2019$Orden)) %>% 
+Migration_2019 <- Migration_2019 %>% mutate("id_personal"= paste0(Migration_2019$ï..Directorio, "-", Migration_2019$Secuencia_p, "-", Migration_2019$Orden)) %>% 
       select(id_personal, everything())
 
-Migracion_2019$id_personal <- as.factor(Migracion_2019$id_personal)
+Migration_2019$id_personal <- as.factor(Migration_2019$id_personal)
 
 
 
 ###############-I-##############
-setwd("~/ASPECTOS MAESTRIA")
+setwd("~/path/where/you/want/your/output")
 
-##### BASE DE DATOS COMPLETA 2019  ##########
+##### DATABASE COMPLETE  ##########
 
-Dane_2019_completa <- left_join(Dane_2019, Migracion_2019, by = "id_personal")
+Dane_2019_complete <- left_join(Dane_2019, Migration_2019, by = "id_personal")
 
-#write.csv(Dane_2019_completa, "Dane_2019 (Todas las personas).csv")
+write.csv(Dane_2019_complete, "<Name of your DataBase complete (All the surveyed)>.csv")
 
 
 ###############-I-##############
-##### Filtrado de venezolanos y refugiados ##########
+##### FILTER ONLY THE VENEZOLAN INMIGRANTS ##########
 
-Dane2019 <- filter(Dane_2019_completa, ((P753S3=="3") | (is.na(P753S3)==T & P755S3=="3") | 
+Dane2019 <- filter(Dane_2019_complete, ((P753S3=="3") | (is.na(P753S3)==T & P755S3=="3") | 
                                            (is.na(P753S3)==T & is.na(P755S3)==T & P756S3== "3")) )
 
-write.csv(Dane2019, "Dane2019_cabecera-migrantes.csv")
+#This variables above can be found in the DANE migration page 
+
+write.csv(Dane2019, "<Name of your INMIGRANTS DataBase complete>.csv")
 
 
 
